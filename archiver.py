@@ -52,22 +52,26 @@ def call_llm(raw_text):
         logging.error(e)
     return result
 
-def create_markdown(data, raw_text):
+def create_markdown(data, raw_text: str):
 
     timestamp = datetime.now().astimezone().strftime("%Y-%m-%d %H:%M:%S (UTC%z)")
     title = data.get("title", "Untitled")
     clean_text = data.get("clean_text", "")
+
     tags = data.get("tags", [])
     obsidian_links = " ".join([f"[[{t}]]"for t in tags])
-    content = dedent(
-        f"""
-        created: {timestamp}
-        links: {obsidian_links}
+    content = f"\n created: {timestamp} \n links: {obsidian_links} \n\n\n {raw_text}"
+
+    # content = dedent(
+    #     f"""
+    #     created: {timestamp.lstrip()}
+    #     links: {obsidian_links.lstrip()}
 
 
-        {clean_text}
-        """
-    )
+    #     {raw_text.lstrip()}
+    #     """
+    # )
+    
     return title, content
 
 
